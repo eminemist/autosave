@@ -5,7 +5,7 @@ import Navbar from "./Navbar";
 
 import BigSidebar from "./BigSidebar";
 import FormRowSelect from "./FormRowSelect";
-import AllFiles from "./AllFiles";
+import AllFilesContainer from "./AllFilesContainer";
 import Editor from "./Editor";
 
 
@@ -16,7 +16,7 @@ export {
   FormRow,
   Alert,
   Navbar,
-  AllFiles,
+  AllFilesContainer,
   BigSidebar,
   FormRowSelect,
   Editor,

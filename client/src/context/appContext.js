@@ -52,7 +52,7 @@ const initialState = {
   userLocation: userLocation || "",
   showSidebar: false,
 
-  files: {},
+  files: [],
   totalFiles: {},
   numOfPages: 1,
   page: 1,
@@ -123,52 +123,7 @@ const AppProvider = ({ children }) => {
     localStorage.removeItem("location");
   };
 
-  // const registerUser = async (currentUser) => {
-  //   dispatch({ type: REGISTER_USER_BEGIN });
-  //   console.log(initialState.isUserSet)
-  //   try {
-  //     const response = await axios.post("/api/v1/auth/register", currentUser);
-  //     //console.log(response)
-  //     const { user, token, location } = response.data;
-  //     dispatch({
-  //       type: REGISTER_USER_SUCCESS,
-  //       payload: { user, token, location },
-  //     });
-  //     //local storage later
-  //     addUserToLocalStorage({ user, token, location });
-  //   } catch (error) {
-  //     // console.log(error.response)
-  //     dispatch({
-  //       type: REGISTER_USER_ERROR,
-  //       payload: { msg: error.response.data.msg },
-  //     });
-  //   }
-  //   clearAlert();
-  // };
-
-  // const loginUser = async (currentUser) => {
-  //   dispatch({ type: LOGIN_USER_BEGIN });
-  //   console.log(initialState.isUserSet);
-  //   try {
-  //     const {data} = await axios.post("/api/v1/auth/login", currentUser);
-  //     //console.log(response)
-  //     const { user, token, location } = data;
-  //     dispatch({
-  //       type: LOGIN_USER_SUCCESS,
-  //       payload: { user, token, location },
-  //     });
-  //     //local storage later
-  //     addUserToLocalStorage({ user, token, location });
-  //   } catch (error) {
-
-  //     dispatch({
-  //       type: LOGIN_USER_ERROR,
-  //       payload: { msg: error.response.data.msg },
-  //     });
-  //   }
-  //   clearAlert();
-  // }
-
+ 
   const setupUser = async ({ currentUser, endpoint, alertText }) => {
     dispatch({ type: SETUP_USER_BEGIN });
 
@@ -247,8 +202,8 @@ const AppProvider = ({ children }) => {
     dispatch({ type: GET_FILES_BEGIN });
     try {
       const  files = await authFetch(url);
-     // const  files  = data;
-     console.log(files);
+   
+     //console.log(files);
       dispatch({
         type: GET_FILES_SUCCESS,
         payload: {
@@ -270,7 +225,7 @@ const AppProvider = ({ children }) => {
     try {
       const totalFiles = await authFetch(url);
       
-      console.log(totalFiles);
+      //console.log(totalFiles);
       dispatch({
         type: GET_ALL_FILES_SUCCESS,
         payload: {
@@ -278,7 +233,7 @@ const AppProvider = ({ children }) => {
         },
       });
     } catch (error) {
-      logoutUser();
+    //  logoutUser();
     }
     clearAlert();
   };
@@ -332,7 +287,7 @@ const AppProvider = ({ children }) => {
   };
 
   // useEffect(()=>{
-  //   getFile()
+  //   getFile("64ad6197be40ddc8eb7f60fb")
   // },[])
  
   // useEffect(()=>{

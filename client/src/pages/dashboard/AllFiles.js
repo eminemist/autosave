@@ -1,9 +1,8 @@
-import  SearchContainer  from "../../components/SearchContainer";
+import  {AllFilesContainer}  from "../../components/index";
 const AllFiles = () => {
   return (
     <>
-      <SearchContainer />
-      
+      <AllFilesContainer />
     </>
   );
 };
