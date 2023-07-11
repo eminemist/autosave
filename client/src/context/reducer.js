@@ -22,11 +22,11 @@ import {
   // CREATE_JOB_ERROR,
   GET_FILES_BEGIN,
   GET_FILES_SUCCESS,
-  // SET_EDIT_JOB,
-  // DELETE_JOB_BEGIN,
-  // EDIT_JOB_BEGIN,
-  // EDIT_JOB_SUCCESS,
-  // EDIT_JOB_ERROR,
+  SET_EDIT_FILE,
+  DELETE_FILE_BEGIN,
+  EDIT_FILE_BEGIN,
+  EDIT_FILE_SUCCESS,
+  EDIT_FILE_ERROR,
   // SHOW_STATS_BEGIN,
   // SHOW_STATS_SUCCESS,
   // CLEAR_FILTERS,
@@ -213,12 +213,48 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      jobs: action.payload.jobs,
+      files: action.payload.files,
       totalFiles: action.payload.totalFiles,
-      numOfPages: action.payload.numOfPages,
+      
+    };
+  }
+  
+  if (action.type === SET_EDIT_FILE) {
+    const file = state.jobs.find((file) => file._id === action.payload.id);
+    const { _id, data} = file;
+    return {
+      ...state,
+      isEditing: true,
+      editJobId: _id,
+      data
     };
   }
 
+  if (action.type === DELETE_FILE_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+
+  if (action.type === EDIT_FILE_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === EDIT_FILE_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "File Updated!",
+    };
+  }
+  if (action.type === EDIT_FILE_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
+    };
+  }
  
 
   if (action.type === CHANGE_PAGE) {

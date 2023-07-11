@@ -1,56 +1,68 @@
-import {useEffect , useState} from 'react'
-import Quill from 'quill'
-import 'quill/dist/quill.snow.css'
+//import { useEffect, useState, useCallback } from "react";
 
-const toolbarOptions = [
-  ["bold", "italic", "underline", "strike"], // toggled buttons
-  ["blockquote", "code-block"],
+import {debounce} from 'lodash'
 
-  [{ "header": 1 }, { "header": 2 }], // custom button values
-  [{ "list": "ordered" }, { "list": "bullet" }],
-  [{ "script": "sub" }, { "script": "super" }], // superscript/subscript
-  [{ "indent": "-1" }, { "indent": "+1" }], // outdent/indent
-  [{ "direction": "rtl" }], // text direction
 
-  [{ "size": ["small", false, "large", "huge"] }], // custom dropdown
-  [{ "header": [1, 2, 3, 4, 5, 6, false] }],
+ //import { DebounceInput } from 'react-debounce-input';
 
-  [{ "color": [] }, { "background": [] }], // dropdown with defaults from theme
-  [{ "font": [] }],
-  [{ "align": [] }],
-
-  ["clean"], // remove formatting button
-];
 
 const Editor = () => {
-  const [quill,setQuill]= useState()
+  //const [suggestions, setSuggestions] = useState("");
 
+  // Method 1 - from scratch
+  // const debounce = (func) => {
+  //   let timer;
+  //   return function (...args) {
+  //     const context = this;
+  //     if (timer) clearTimeout(timer);
+  //     timer = setTimeout(() => {
+  //       timer = null;
+  //       func.apply(context, args);
+  //     }, 500);
+  //   };
+  // };
+  // const handleChange = (value) => {
+  //   fetch(`https://demo.dataverse.org/api/search?q=${value}`)
+  //     .then((res) => res.json())
+  //     .then((json) => setSuggestions(json.data.items));
+  // };
+  //const optimizedFn = useCallback(debounce(handleChange), []);
 
-  useEffect (()=>{
-    const newQuill = new Quill('#container',{theme:'snow' , modules:{toolbar:toolbarOptions}})
-    setQuill(newQuill)
-  },[])
+ // Method 2 - using lodash
+  const handleChangeWithLib = debounce((value) => {
+    console.log(value)
+  }, 500);
+  return (
+    <>
+      <h2 style={{ textAlign: "center" }}>FileName</h2>
 
-  useEffect(()=>{
-    if(quill === null) return;
+      {/* Method 1 - from scratch */}
+      {/* <input
+        type="text"
+        className="search"
+        placeholder="Enter something here..."
+        onChange={(e) => optimizedFn(e.target.value)}
+      /> */}
 
-    const handleChange =  (delta,oldData,source)=>{
-      if(source !=='user'){return}
+      {/* Method 2 - using lodash */}
+      <textarea
+        type="text"
+        className="textInput"
+        placeholder="Your text goes here..."
+        onChange={(e) => handleChangeWithLib(e.target.value)}
+      />
 
-      console.log(delta)
-    }
-     quill && quill.on("text-change", handleChange);
-      return()=>{
-        quill && quill.off("text-change",handleChange);
+      {/* Method 3 - using react-debounce-input */}
+      {/* <DebounceInput
+        minLength={2}
+        className="search"
+        placeholder="Enter something here..."
+        debounceTimeout={500}
+        onChange={e => handleChange(e.target.value)} /> */}
+
       
-    }
-  },[quill])
-  
-    return (
-      <div className='outerBox'>
-        <div className="innerBox" id="container"></div>
-      </div>
-    );
+    </>
+  );
 }
 
 export default Editor

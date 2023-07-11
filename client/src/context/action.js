@@ -38,3 +38,9 @@ export const GET_FILES_SUCCESS = "GET_FILES_SUCCESS";
 
 
 export const CHANGE_PAGE = "CHANGE_PAGE";
+
+ export const SET_EDIT_FILE = "SET_EDIT_FILE";
+ export const DELETE_FILE_BEGIN = "DELETE_FILE_BEGIN";
+ export const EDIT_FILE_BEGIN = "EDIT_FILE_BEGIN";
+ export const EDIT_FILE_SUCCESS = "EDIT_FILE_SUCCESS";
+  export const EDIT_FILE_ERROR = "EDIT_FILE_ERROR";

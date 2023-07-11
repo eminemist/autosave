@@ -23,11 +23,11 @@ import {
   // CREATE_JOB_ERROR,
   GET_FILES_BEGIN,
   GET_FILES_SUCCESS,
-  // SET_EDIT_JOB,
-  // DELETE_JOB_BEGIN,
-  // EDIT_JOB_BEGIN,
-  // EDIT_JOB_SUCCESS,
-  // EDIT_JOB_ERROR,
+   SET_EDIT_FILE,
+   DELETE_FILE_BEGIN,
+   EDIT_FILE_BEGIN,
+   EDIT_FILE_SUCCESS,
+   EDIT_FILE_ERROR,
   // SHOW_STATS_BEGIN,
   // SHOW_STATS_SUCCESS,
   // CLEAR_FILTERS,
@@ -242,24 +242,24 @@ const AppProvider = ({ children }) => {
 
   
 
-  const getFiles = async () => {
+  const getFiles = async (currentUser) => {
     // added page
     //const { userId } = state;
 
-    let url = `/files/findAlldFiles`;
+    let url = `/files/findAlldFiles/?${currentUser.userId}`;
     // if (search) {
     //   url = url + `&search=${search}`;
     // }
     dispatch({ type: GET_FILES_BEGIN });
     try {
       const { data } = await authFetch(url);
-      const { files, totalFiles, numOfPages } = data;
+      const { files, totalFiles } = data;
       dispatch({
         type: GET_FILES_SUCCESS,
         payload: {
           files,
           totalFiles,
-          numOfPages,
+         
         },
       });
     } catch (error) {
@@ -269,7 +269,41 @@ const AppProvider = ({ children }) => {
   };
 
 
-  
+  const setEditFile = (id) => {
+    dispatch({ type: SET_EDIT_FILE, payload: { id } });
+  };
+  const editFile = async () => {
+    dispatch({ type: EDIT_FILE_BEGIN });
+    try {
+      const {data } = state;
+
+      await authFetch.patch(`/files/${state.editFileId}`, {
+        data
+      });
+      dispatch({
+        type: EDIT_FILE_SUCCESS,
+      });
+      dispatch({ type: CLEAR_VALUES });
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: EDIT_FILE_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
+  const deleteFile = async (fileId) => {
+    dispatch({ type: DELETE_FILE_BEGIN });
+    try {
+      await authFetch.delete(`/files/${fileId}`);
+      getFiles();
+    } catch (error) {
+      console.log(error.response);
+      logoutUser();
+    }
+  };
 
 
   const changePage = (page) => {
@@ -291,9 +325,9 @@ const AppProvider = ({ children }) => {
         getFiles,
         // createJob,
         // getJobs,
-        // setEditJob,
-        // deleteJob,
-        // editJob,
+        setEditFile,
+        deleteFile,
+        editFile,
         // showStats,
         // clearFilters,
         changePage,

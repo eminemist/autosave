@@ -297,6 +297,7 @@ ul {
   min-height: 100vh;
 }
 
+
 .coffee-info {
   text-align: center;
   text-transform: capitalize;
@@ -318,4 +319,10 @@ ul {
     display: inline-block;
     margin-right: 0.5rem;
   }
+}
+
+
+textarea {
+  width: 100vh;
+  height: 100vh;
 }

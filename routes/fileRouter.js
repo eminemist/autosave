@@ -11,9 +11,9 @@ import {
 } from "../controllers/fileController.js";
 
 //SETUP ROUTES AND DIRECT THEM TO ROUTER
-router.route("/:id").patch(findFile);
+router.route("/findFile/:id").patch(findFile);
 router.route("/findAllFiles").get(findAllFiles);
-router.route("/").post(createFile);
+router.route("/createFile").post(createFile);
 router.route("/:id").delete(deleteFile).patch(updateFile);
 
 
