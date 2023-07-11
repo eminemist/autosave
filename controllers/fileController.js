@@ -1,43 +1,68 @@
-
 import Files from "../models/Files.js";
 import { StatusCodes } from "http-status-codes";
 
-const createFile = async (req,res) =>{
-  // const {file} =req.body
-  // req.body.createdBy = req.User.userId
-  // const newfile = await Files.create(req.body)
-  // res.status(StatusCodes.CREATED)
-  //    .json({file})
-  res.status(StatusCodes.CREATED)
-      .json({"file":"created"})
-}
-
-const findFile = async (req, res) => {
-  // const file = await File.find({createdBy:req.user.userId})
-  // res.status(StatusCodes.OK)
-  //    .json({file,totalFiles:file.length,numOfPages : 1});
-  res.status(StatusCodes.CREATED)
-     .json({ "file": "found" });
+const createFile = async (req, res) => {
+  try {
+    const { title, content, date } = req.body;
+    const newFile = new Files({
+      title,
+      content,
+      date,
+      _userId: req.body._userId,
+      name: req.body.name,
+    });
+    console.log(req.body);
+    await newFile.save();
+    res.status(StatusCodes.CREATED).json({ msg: "Created a File" });
+  } catch (err) {
+    return res.status(500).json({ msg: err.message });
+  }
 };
 
-const updateFile = async (req,res) =>{
-   //res.status(StatusCodes.OK).json({ file });
-   res.status(StatusCodes.CREATED)
-      .json({ "file": "updated" });
+const findFile = async (req, res) => {
+  try {
+    //console.log(req.body)
+    const file = await Files.find({ _id: req.params.id });
+    res.status(StatusCodes.CREATED).json(file);
+  } catch (err) {
+    return res.status(500).json({ msg: err.message });
+  }
+};
+
+const updateFile = async (req, res) => {
+  try {
+    const { title, content, date } = req.body;
+    await Files.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        title,
+        content,
+        date,
+      }
+    );
+    res.status(StatusCodes.CREATED).json({ msg: "Updated a File" });
+  } catch (err) {
+    return res.status(500).json({ msg: err.message });
+  }
 };
 
 const deleteFile = async (req, res) => {
-//  const file=req.fileId 
-//  await file.remove();
-//  res.status(StatusCodes.OK).json({ msg: "Success! file removed" });
-res.status(StatusCodes.CREATED)
-   .json({ "file": "deleted" });
+  try {
+    await Files.findByIdAndDelete(req.params.id);
+    res.status(StatusCodes.CREATED).json({ msg: "Deleted a File" });
+  } catch (err) {
+    return res.status(500).json({ msg: err.message });
+  }
 };
 
-const findAllFiles = async (req,res) =>{
-  // res.status(StatusCodes.OK).json({ file, totalfiles, numOfPages });
-  
-}
+const findAllFiles = async (req, res) => {
+  try {
+    //console.log(req.body)
+    const file = await Files.find({ _userId: req.body._userId });
+    res.status(StatusCodes.CREATED).json(file);
+  } catch (err) {
+    return res.status(500).json({ msg: err.message });
+  }
+};
 
-
-export { findFile, createFile, updateFile, deleteFile , findAllFiles }; 
+export { findFile, createFile, updateFile, deleteFile, findAllFiles };

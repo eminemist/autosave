@@ -1,0 +1,57 @@
+import {useEffect , useState} from 'react'
+import Quill from 'quill'
+import 'quill/dist/quill.snow.css'
+import {debounce} from 'lodash'
+
+const toolbarOptions = [
+  ["bold", "italic", "underline", "strike"], // toggled buttons
+  ["blockquote", "code-block"],
+
+  [{ "header": 1 }, { "header": 2 }], // custom button values
+  [{ "list": "ordered" }, { "list": "bullet" }],
+  [{ "script": "sub" }, { "script": "super" }], // superscript/subscript
+  [{ "indent": "-1" }, { "indent": "+1" }], // outdent/indent
+  [{ "direction": "rtl" }], // text direction
+
+  [{ "size": ["small", false, "large", "huge"] }], // custom dropdown
+  [{ "header": [1, 2, 3, 4, 5, 6, false] }],
+
+  [{ "color": [] }, { "background": [] }], // dropdown with defaults from theme
+  [{ "font": [] }],
+  [{ "align": [] }],
+
+  ["clean"], // remove formatting button
+];
+
+const Editor = () => {
+  const [quill,setQuill]= useState()
+
+
+  useEffect (()=>{
+    const newQuill = new Quill('#container',{theme:'snow' , modules:{toolbar:toolbarOptions}})
+    setQuill(newQuill)
+  },[])
+
+  useEffect(()=>{
+    if(quill === null) return;
+
+  const handleChange =  (delta,oldData,source)=>{
+    if(source !=='user'){return}
+
+    console.log(delta)
+  }
+    quill && quill.on("text-change", handleChange);
+    return()=>{
+      quill && quill.off("text-change",handleChange);
+    
+  }
+  },[quill])
+  
+    return (
+      <div className='outerBox'>
+        <div className="innerBox" id="container"></div>
+      </div>
+    );
+}
+
+export default Editor

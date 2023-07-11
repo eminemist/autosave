@@ -1,0 +1,23 @@
+login -> all files page
+api call to fetch files for a user ? show all files : button for create -> editor 
+
+editor component - new file or existing -> (props: id of the file)
+
+existing file -> api call to fetch file content 
+1. FileName
+2. textual data
+we have id in props in this case
+
+
+new file - api to make new file -> id 
+
+
+editor page compoent 
+1. state which will have the content 
+
+if we have an exisiting file -> fill state with this 
+
+
+onchange of textarea -> update file api and update state
+
+

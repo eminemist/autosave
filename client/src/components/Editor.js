@@ -1,68 +1,44 @@
-//import { useEffect, useState, useCallback } from "react";
+import { useState } from "react";
 
-import {debounce} from 'lodash'
-
-
- //import { DebounceInput } from 'react-debounce-input';
+import { debounce } from "lodash";
 
 
 const Editor = () => {
-  //const [suggestions, setSuggestions] = useState("");
+  //const history = useHistory();
 
-  // Method 1 - from scratch
-  // const debounce = (func) => {
-  //   let timer;
-  //   return function (...args) {
-  //     const context = this;
-  //     if (timer) clearTimeout(timer);
-  //     timer = setTimeout(() => {
-  //       timer = null;
-  //       func.apply(context, args);
-  //     }, 500);
-  //   };
-  // };
-  // const handleChange = (value) => {
-  //   fetch(`https://demo.dataverse.org/api/search?q=${value}`)
-  //     .then((res) => res.json())
-  //     .then((json) => setSuggestions(json.data.items));
-  // };
-  //const optimizedFn = useCallback(debounce(handleChange), []);
+  const [file, setFile] = useState({
+    title: "",
+    content: "",
+    date: "",
+  });
 
- // Method 2 - using lodash
-  const handleChangeWithLib = debounce((value) => {
-    console.log(value)
+const handleChangeWithLib = debounce((e) => {
+    //fetch(`https://demo.dataverse.org/api/search?q=${value}`)
+    //  .then((res) => res.json())
+    //  .then((json) => setSuggestions(json.data.items));
+     const { name, value } = e.target;
+     setFile({ ...file, [name]: value });
+    console.log(e.target.value)
   }, 500);
+
+  
+
   return (
-    <>
-      <h2 style={{ textAlign: "center" }}>FileName</h2>
-
-      {/* Method 1 - from scratch */}
-      {/* <input
-        type="text"
-        className="search"
-        placeholder="Enter something here..."
-        onChange={(e) => optimizedFn(e.target.value)}
-      /> */}
-
-      {/* Method 2 - using lodash */}
+    <div className="editorPage">
       <textarea
         type="text"
-        className="textInput"
-        placeholder="Your text goes here..."
-        onChange={(e) => handleChangeWithLib(e.target.value)}
+        className="title"
+        placeholder="Enter Title here..."
+        onChange={(e) => handleChangeWithLib(e)}
       />
-
-      {/* Method 3 - using react-debounce-input */}
-      {/* <DebounceInput
-        minLength={2}
+      <textarea
+        type="text"
         className="search"
         placeholder="Enter something here..."
-        debounceTimeout={500}
-        onChange={e => handleChange(e.target.value)} /> */}
-
-      
-    </>
+        onChange={(e) => handleChangeWithLib(e)}
+      />
+    </div>
   );
-}
+};
 
-export default Editor
+export default Editor;
