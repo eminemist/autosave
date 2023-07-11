@@ -1,4 +1,4 @@
-import React, { useReducer, useContext  } from "react";
+import React, { useReducer, useContext, useEffect  } from "react";
 import {
   DISPLAY_ALERT,
   CLEAR_ALERT,
@@ -23,6 +23,8 @@ import {
   // CREATE_JOB_ERROR,
   GET_FILES_BEGIN,
   GET_FILES_SUCCESS,
+  GET_ALL_FILES_BEGIN,
+  GET_ALL_FILES_SUCCESS,
    SET_EDIT_FILE,
    DELETE_FILE_BEGIN,
    EDIT_FILE_BEGIN,
@@ -49,18 +51,14 @@ const initialState = {
   token: token,
   userLocation: userLocation || "",
   showSidebar: false,
-  
-  files: [],
-  totalFiles: 0,
+
+  files: {},
+  totalFiles: {},
   numOfPages: 1,
   page: 1,
- 
-
-  search: "",
-  searchStatus: "all",
-  searchType: "all",
- 
-  
+  title:"EDIT TITLE",
+  content:"EDIT CONTENT",
+  date:"",
 
   isUserSet: false,
 };
@@ -241,25 +239,20 @@ const AppProvider = ({ children }) => {
   };
 
   
-
-  const getFiles = async (currentUser) => {
-    // added page
-    //const { userId } = state;
-
-    let url = `/files/findAlldFiles/?${currentUser.userId}`;
-    // if (search) {
-    //   url = url + `&search=${search}`;
-    // }
+ //done
+  const getFile = async (currentFile) => {
+   
+    let url = `/files/${currentFile}`;
+    
     dispatch({ type: GET_FILES_BEGIN });
     try {
-      const { data } = await authFetch(url);
-      const { files, totalFiles } = data;
+      const  files = await authFetch(url);
+     // const  files  = data;
+     console.log(files);
       dispatch({
         type: GET_FILES_SUCCESS,
         payload: {
           files,
-          totalFiles,
-         
         },
       });
     } catch (error) {
@@ -268,17 +261,43 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  //done
+  const getAllFiles = async (currentUser) => {
+    
+    let url = `/files`;
 
-  const setEditFile = (id) => {
-    dispatch({ type: SET_EDIT_FILE, payload: { id } });
+    dispatch({ type: GET_ALL_FILES_BEGIN });
+    try {
+      const totalFiles = await authFetch(url);
+      
+      console.log(totalFiles);
+      dispatch({
+        type: GET_ALL_FILES_SUCCESS,
+        payload: {
+          totalFiles
+        },
+      });
+    } catch (error) {
+      logoutUser();
+    }
+    clearAlert();
   };
-  const editFile = async () => {
+
+
+  const setEditFile = (currentFile) => {
+    dispatch({ type: SET_EDIT_FILE, payload: { currentFile } });
+  };
+ 
+  //done
+  const editFile = async (currentFile) => {
     dispatch({ type: EDIT_FILE_BEGIN });
     try {
-      const {data } = state;
+      const { title, content, date } = state;
 
-      await authFetch.patch(`/files/${state.editFileId}`, {
-        data
+      await authFetch.put(`/files/${currentFile}`, {
+        title,
+        content,
+        date,
       });
       dispatch({
         type: EDIT_FILE_SUCCESS,
@@ -294,11 +313,13 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
-  const deleteFile = async (fileId) => {
+  
+ //done
+  const deleteFile = async (currentFile) => {
     dispatch({ type: DELETE_FILE_BEGIN });
     try {
-      await authFetch.delete(`/files/${fileId}`);
-      getFiles();
+      await authFetch.delete(`/files/${currentFile}`);
+      console.log(getAllFiles())
     } catch (error) {
       console.log(error.response);
       logoutUser();
@@ -310,6 +331,17 @@ const AppProvider = ({ children }) => {
     dispatch({ type: CHANGE_PAGE, payload: { page } });
   };
 
+  // useEffect(()=>{
+  //   getFile()
+  // },[])
+ 
+  // useEffect(()=>{
+  //   getAllFiles("64abe0e8499b375101f56c05");
+  // },[])
+ 
+  // useEffect(()=>{
+  //  deleteFile("64ad615ebe40ddc8eb7f60f7");
+  // },[])
 
   return (
     <AppContext.Provider
@@ -322,7 +354,8 @@ const AppProvider = ({ children }) => {
         updateUser,
         handleChange,
         clearValues,
-        getFiles,
+        getFile,
+        getAllFiles,
         // createJob,
         // getJobs,
         setEditFile,

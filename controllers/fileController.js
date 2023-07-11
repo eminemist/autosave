@@ -57,8 +57,9 @@ const deleteFile = async (req, res) => {
 
 const findAllFiles = async (req, res) => {
   try {
-    //console.log(req.body)
-    const file = await Files.find({ _userId: req.body._userId });
+    console.log("here",req.user)
+    const file = await Files.find({ _userId: req.user.userId });
+    console.log(file)
     res.status(StatusCodes.CREATED).json(file);
   } catch (err) {
     return res.status(500).json({ msg: err.message });

@@ -22,6 +22,8 @@ import {
   // CREATE_JOB_ERROR,
   GET_FILES_BEGIN,
   GET_FILES_SUCCESS,
+  GET_ALL_FILES_BEGIN,
+  GET_ALL_FILES_SUCCESS,
   SET_EDIT_FILE,
   DELETE_FILE_BEGIN,
   EDIT_FILE_BEGIN,
@@ -216,6 +218,17 @@ const reducer = (state, action) => {
       files: action.payload.files,
       totalFiles: action.payload.totalFiles,
       
+    };
+  }
+  if (action.type === GET_ALL_FILES_BEGIN) {
+    return { ...state, isLoading: true, showAlert: false };
+  }
+  if (action.type === GET_ALL_FILES_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      files: action.payload.files,
+      totalFiles: action.payload.totalFiles,
     };
   }
   
