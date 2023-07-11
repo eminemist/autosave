@@ -326,3 +326,23 @@ textarea {
   width: 100vh;
   height: 100vh;
 }
+
+.AllFiles{
+  display: flex;
+  flex-direction: row;
+  padding: 10px 10px 10px 10px;
+  border-radius: 3px;
+  background-color: white;
+}
+
+.fileName{
+  background-color: whitesmoke;
+  margin: 10px 50px 10px 10px;
+  border-radius: 3px;
+  box-shadow: #bcccdc;
+}
+
+.lastChanged{
+  background-color: whitesmoke;
+  margin: 10px 10px 10px 60px;
+}

@@ -1,6 +1,7 @@
 
 import { useAppContext } from "../context/appContext";
 import Wrapper from "../assets/wrappers/SearchContainer";
+import AllFiles from "./AllFiles";
 const SearchContainer = () => {
   const {
     isLoading,
@@ -16,9 +17,13 @@ const SearchContainer = () => {
 
   return (
     <Wrapper>
-      
-        <h4>search form</h4>
-
+      <AllFiles />
+      <AllFiles />
+      <AllFiles />
+      <AllFiles />
+      <AllFiles />
+      <AllFiles />
+      <AllFiles/>
     </Wrapper>
   );
 };
