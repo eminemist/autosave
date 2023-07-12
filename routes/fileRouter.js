@@ -19,7 +19,7 @@ import {
 // router.route("/:id").delete(deleteFile).patch(updateFile);
 
 router.route("/").get(findAllFiles);
-router.route("/").post( createFile);
+router.route("/").put( createFile);
 router.route("/:id").get( findFile);
 router.route("/:id").put( updateFile);
 router.route("/:id").delete( deleteFile);

@@ -1,10 +1,10 @@
 import React from 'react'
 import Wrapper from "../assets/wrappers/FileInfo"
 
-const FileInfo = ({name, updatedAt}) => {
+const FileInfo = ({title, updatedAt}) => {
   return (
     <div>
-      <p>File Name: {name}</p>
+      <p>File Name: {title}</p>
       <p>Updated At: {updatedAt}</p>
     </div>
   );

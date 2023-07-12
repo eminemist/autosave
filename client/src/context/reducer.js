@@ -16,10 +16,10 @@ import {
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
   HANDLE_CHANGE,
-  CLEAR_VALUES,
-  // CREATE_JOB_BEGIN,
-  // CREATE_JOB_SUCCESS,
-  // CREATE_JOB_ERROR,
+ // CLEAR_VALUES,
+  CREATE_FILE_BEGIN,
+  CREATE_FILE_SUCCESS,
+  CREATE_FILE_ERROR,
   GET_FILES_BEGIN,
   GET_FILES_SUCCESS,
   GET_ALL_FILES_BEGIN,
@@ -29,9 +29,7 @@ import {
   EDIT_FILE_BEGIN,
   EDIT_FILE_SUCCESS,
   EDIT_FILE_ERROR,
-  // SHOW_STATS_BEGIN,
-  // SHOW_STATS_SUCCESS,
-  // CLEAR_FILTERS,
+  
   CHANGE_PAGE,
 } from "./action";
 
@@ -136,18 +134,7 @@ const reducer = (state, action) => {
     return { ...state, page: 1, [action.payload.name]: action.payload.value };
   }
 
-  if (action.type === CLEAR_VALUES) {
-    const initialState = {
-      isEditing: false,
-      editJobId: "",
-      position: "",
-      company: "",
-      jobLocation: state.userLocation,
-      jobType: "full-time",
-      status: "pending",
-    };
-    return { ...state, ...initialState };
-  }
+  
 
 
 
@@ -178,7 +165,7 @@ const reducer = (state, action) => {
     return {
       ...state,
       isEditing: true,
-      editJobId: _id,
+      editFileId: _id,
       data
     };
   }
@@ -213,6 +200,28 @@ const reducer = (state, action) => {
   if (action.type === CHANGE_PAGE) {
     return { ...state, page: action.payload.page };
   }
+
+   if (action.type === CREATE_FILE_BEGIN) {
+     return { ...state, isLoading: true };
+   }
+   if (action.type === CREATE_FILE_SUCCESS) {
+     return {
+       ...state,
+       isLoading: false,
+       showAlert: true,
+       alertType: "success",
+       alertText: "New File Created!",
+     };
+   }
+   if (action.type === CREATE_FILE_ERROR) {
+     return {
+       ...state,
+       isLoading: false,
+       showAlert: true,
+       alertType: "danger",
+       alertText: action.payload.msg,
+     };
+   }
 
   throw new Error(`no such action : ${action.type}`);
 };

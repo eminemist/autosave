@@ -3,17 +3,17 @@ import { StatusCodes } from "http-status-codes";
 
 const createFile = async (req, res) => {
   try {
-    const { title, content, date } = req.body;
+    const { title, content, _userId} = req.body;
+    console.log(req.headers)
     const newFile = new Files({
       title,
       content,
-      date,
-      _userId: req.body._userId,
-      name: req.body.name,
+      _userId
+      //name: req.body.name,
     });
-    console.log(req.body);
+    
     await newFile.save();
-    res.status(StatusCodes.CREATED).json({ msg: "Created a File" });
+    res.status(StatusCodes.CREATED).json( newFile );
   } catch (err) {
     return res.status(500).json({ msg: err.message });
   }

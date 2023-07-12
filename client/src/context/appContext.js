@@ -1,4 +1,4 @@
-import React, { useReducer, useContext, useEffect  } from "react";
+import React, { useReducer, useContext } from "react";
 import {
   DISPLAY_ALERT,
   CLEAR_ALERT,
@@ -18,21 +18,18 @@ import {
   UPDATE_USER_ERROR,
   HANDLE_CHANGE,
   CLEAR_VALUES,
-  // CREATE_JOB_BEGIN,
-  // CREATE_JOB_SUCCESS,
-  // CREATE_JOB_ERROR,
+  CREATE_FILE_BEGIN,
+  CREATE_FILE_SUCCESS,
+  CREATE_FILE_ERROR,
   GET_FILES_BEGIN,
   GET_FILES_SUCCESS,
   GET_ALL_FILES_BEGIN,
   GET_ALL_FILES_SUCCESS,
-   SET_EDIT_FILE,
-   DELETE_FILE_BEGIN,
-   EDIT_FILE_BEGIN,
-   EDIT_FILE_SUCCESS,
-   EDIT_FILE_ERROR,
-  // SHOW_STATS_BEGIN,
-  // SHOW_STATS_SUCCESS,
-  // CLEAR_FILTERS,
+  SET_EDIT_FILE,
+  DELETE_FILE_BEGIN,
+  EDIT_FILE_BEGIN,
+  //EDIT_FILE_SUCCESS,
+  EDIT_FILE_ERROR,
   CHANGE_PAGE,
 } from "./action";
 import axios from "axios";
@@ -51,15 +48,13 @@ const initialState = {
   token: token,
   userLocation: userLocation || "",
   showSidebar: false,
-
   file: {},
   totalFiles: [],
   numOfPages: 1,
   page: 1,
-  title:"EDIT TITLE",
-  content:"EDIT CONTENT",
-  date:"",
-
+  title: "EDIT TITLE",
+  content: "EDIT CONTENT",
+  date: "",
   isUserSet: false,
 };
 
@@ -76,7 +71,8 @@ const AppProvider = ({ children }) => {
   //request
   authFetch.interceptors.request.use(
     (config) => {
-     config.headers["Authorization"] = `Bearer ${state.token}`;
+      config.headers["Authorization"] = `Bearer ${state.token}`;
+      
       return config;
     },
     (error) => {
@@ -89,12 +85,12 @@ const AppProvider = ({ children }) => {
       return response;
     },
     (error) => {
-     // console.log("error.response");
+      // console.log("error.response");
       if (error.response.status === 401) {
         logoutUser();
         //console.log("AUTH ERROR");
       }
-      Promise.reject(error);
+      // Promise.reject(error);
     }
   );
 
@@ -123,7 +119,6 @@ const AppProvider = ({ children }) => {
     localStorage.removeItem("location");
   };
 
- 
   const setupUser = async ({ currentUser, endpoint, alertText }) => {
     dispatch({ type: SETUP_USER_BEGIN });
 
@@ -193,11 +188,10 @@ const AppProvider = ({ children }) => {
     dispatch({ type: CLEAR_VALUES });
   };
 
-  
- //done
+  //done
   const getFile = async (file_id) => {
     let url = `/files/${file_id}`;
-    
+
     dispatch({ type: GET_FILES_BEGIN });
     try {
       const file = await authFetch(url);
@@ -213,7 +207,6 @@ const AppProvider = ({ children }) => {
 
   //done
   const getAllFiles = async (currentUser) => {
-    
     let url = `/files`;
 
     dispatch({ type: GET_ALL_FILES_BEGIN });
@@ -221,21 +214,18 @@ const AppProvider = ({ children }) => {
       const totalFiles = await authFetch(url);
       dispatch({
         type: GET_ALL_FILES_SUCCESS,
-        payload: [
-          ...totalFiles.data
-        ],
+        payload: [...totalFiles.data],
       });
     } catch (error) {
-    //  logoutUser();
+      //  logoutUser();
     }
     clearAlert();
   };
 
-
   const setEditFile = (currentFile) => {
     dispatch({ type: SET_EDIT_FILE, payload: { currentFile } });
   };
- 
+
   //done
   const editFile = async (id, title, content) => {
     dispatch({ type: EDIT_FILE_BEGIN });
@@ -245,7 +235,7 @@ const AppProvider = ({ children }) => {
         content,
       });
 
-      getFile(id)
+      getFile(id);
       // dispatch({
       //   type: EDIT_FILE_SUCCESS,
       // });
@@ -260,8 +250,7 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
-  
- //done
+  //done
   const deleteFile = async (currentFile) => {
     dispatch({ type: DELETE_FILE_BEGIN });
     try {
@@ -273,19 +262,35 @@ const AppProvider = ({ children }) => {
     }
   };
 
-
   const changePage = (page) => {
     dispatch({ type: CHANGE_PAGE, payload: { page } });
+  };
+
+  const createFile = async (title, content) => {
+    try {
+      if (state?.user && state?.user?._id) {
+        const file = await authFetch.put(`/files`, {
+          title: title,
+          content: content,
+          _userId: state?.user?._id,
+        });
+         dispatch({
+            type:CREATE_FILE_SUCCESS,
+            payload: file.data,
+         });
+         getFile(file?.data?._id)
+      }
+    } catch (error) {}
   };
 
   // useEffect(()=>{
   //   getFile("64ad6197be40ddc8eb7f60fb")
   // },[])
- 
+
   // useEffect(()=>{
   //   getAllFiles("64abe0e8499b375101f56c05");
   // },[])
- 
+
   // useEffect(()=>{
   //  deleteFile("64ad615ebe40ddc8eb7f60f7");
   // },[])
@@ -307,6 +312,7 @@ const AppProvider = ({ children }) => {
         deleteFile,
         editFile,
         changePage,
+        createFile,
       }}
     >
       {children}
