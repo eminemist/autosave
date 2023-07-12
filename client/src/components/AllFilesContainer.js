@@ -5,30 +5,30 @@ import File from "./File";
 import Wrapper from "../assets/wrappers/AllFilesContainer";
 
 const AllFilesContainer = () => {
-  const { getAllFiles, isLoading, files, totalFiles } = useAppContext();
+  const { getAllFiles, isLoading, totalFiles } = useAppContext();
 
   useEffect(() => {
     getAllFiles();
   }, []);
 
-  //console.log(totalFiles.data[0]);
-  
   if (isLoading) {
     return <Loading center />;
   }
+  
   if (Object.keys(totalFiles).length === 0) {
     return <h2>No Files to display....</h2>;
   }
+
+
   return (
     <Wrapper>
-      <File />
       <h5>
-        {Object.keys(totalFiles).length} File
-        {Object.keys(totalFiles).length > 1 && "s"} Found.....
+        {totalFiles.length}
+        {totalFiles.length > 1 && "s"} Found.....
       </h5>
       <div>
-        {Object.keys(totalFiles).map((totalFile) => {
-          return <File key={totalFile._id} {...totalFiles} />;
+        {totalFiles.map((file) => {
+          return <File key={file._id} {...file} />;
         })}
       </div>
     </Wrapper>

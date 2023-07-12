@@ -20,9 +20,9 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route path="editor" element={<Editor />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="all-files" element={<AllFiles />} />
+          <Route path="/editor" element={<Editor />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/all-files" element={<AllFiles />} />
         </Route>
         <Route path="/register" element={<Register />} />
         <Route path="/landing" element={<Landing />} />

@@ -158,9 +158,7 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      files: action.payload.files,
-      totalFiles: action.payload.totalFiles,
-      
+      files: action.payload
     };
   }
   if (action.type === GET_ALL_FILES_BEGIN) {
@@ -170,8 +168,7 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      files: action.payload.files,
-      totalFiles: action.payload.totalFiles,
+      totalFiles: action.payload,
     };
   }
   

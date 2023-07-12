@@ -52,8 +52,8 @@ const initialState = {
   userLocation: userLocation || "",
   showSidebar: false,
 
-  files: [],
-  totalFiles: {},
+  file: {},
+  totalFiles: [],
   numOfPages: 1,
   page: 1,
   title:"EDIT TITLE",
@@ -195,23 +195,18 @@ const AppProvider = ({ children }) => {
 
   
  //done
-  const getFile = async (currentFile) => {
-   
-    let url = `/files/${currentFile}`;
+  const getFile = async (file_id) => {
+    let url = `/files/${file_id}`;
     
     dispatch({ type: GET_FILES_BEGIN });
     try {
-      const  files = await authFetch(url);
-   
-     //console.log(files);
+      const file = await authFetch(url);
       dispatch({
         type: GET_FILES_SUCCESS,
-        payload: {
-          files,
-        },
+        payload: file.data[0],
       });
     } catch (error) {
-       logoutUser()
+      // logoutUser()
     }
     clearAlert();
   };
@@ -224,13 +219,11 @@ const AppProvider = ({ children }) => {
     dispatch({ type: GET_ALL_FILES_BEGIN });
     try {
       const totalFiles = await authFetch(url);
-      
-      //console.log(totalFiles);
       dispatch({
         type: GET_ALL_FILES_SUCCESS,
-        payload: {
-          totalFiles
-        },
+        payload: [
+          ...totalFiles.data
+        ],
       });
     } catch (error) {
     //  logoutUser();
@@ -244,20 +237,19 @@ const AppProvider = ({ children }) => {
   };
  
   //done
-  const editFile = async (currentFile) => {
+  const editFile = async (id, title, content) => {
     dispatch({ type: EDIT_FILE_BEGIN });
     try {
-      const { title, content, date } = state;
-
-      await authFetch.put(`/files/${currentFile}`, {
+      await authFetch.put(`/files/${id}`, {
         title,
         content,
-        date,
       });
-      dispatch({
-        type: EDIT_FILE_SUCCESS,
-      });
-      dispatch({ type: CLEAR_VALUES });
+
+      getFile(id)
+      // dispatch({
+      //   type: EDIT_FILE_SUCCESS,
+      // });
+      // dispatch({ type: CLEAR_VALUES });
     } catch (error) {
       if (error.response.status === 401) return;
       dispatch({
@@ -274,7 +266,7 @@ const AppProvider = ({ children }) => {
     dispatch({ type: DELETE_FILE_BEGIN });
     try {
       await authFetch.delete(`/files/${currentFile}`);
-      console.log(getAllFiles())
+      // console.log(getAllFiles())
     } catch (error) {
       console.log(error.response);
       logoutUser();
