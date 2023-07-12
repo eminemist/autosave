@@ -2,7 +2,7 @@ import { useAppContext } from "../context/appContext";
 import { useEffect } from "react";
 import Loading from "./Loading";
 import File from "./File";
-import Wrapper from "../assets/wrappers/Navbar";
+import Wrapper from "../assets/wrappers/AllFilesContainer";
 
 const AllFilesContainer = () => {
   const { getAllFiles, isLoading, files, totalFiles } = useAppContext();
@@ -10,7 +10,9 @@ const AllFilesContainer = () => {
   useEffect(() => {
     getAllFiles();
   }, []);
+
   //console.log(totalFiles.data[0]);
+  
   if (isLoading) {
     return <Loading center />;
   }
@@ -18,7 +20,7 @@ const AllFilesContainer = () => {
     return <h2>No Files to display....</h2>;
   }
   return (
-    <>
+    <Wrapper>
       <File />
       <h5>
         {Object.keys(totalFiles).length} File
@@ -29,7 +31,7 @@ const AllFilesContainer = () => {
           return <File key={totalFile._id} {...totalFiles} />;
         })}
       </div>
-    </>
+    </Wrapper>
   );
 };
 

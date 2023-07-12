@@ -1,8 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Landing, Error, Register, ProtectedRoute } from "./pages";
 
-import {  SharedLayout, Profile ,AllFiles } from "./pages/dashboard/index.js";
-import { Editor } from "./components/index.js";
+import {
+  SharedLayout,
+  Profile,
+  AllFiles,
+  Editor,
+} from "./pages/dashboard/index.js";
+
 function App() {
   return (
     <BrowserRouter>

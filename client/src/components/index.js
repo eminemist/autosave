@@ -6,7 +6,7 @@ import Navbar from "./Navbar";
 import BigSidebar from "./BigSidebar";
 import FormRowSelect from "./FormRowSelect";
 import AllFilesContainer from "./AllFilesContainer";
-import Editor from "./Editor";
+
 
 
 import Loading from "./Loading";
@@ -18,7 +18,6 @@ export {
   Navbar,
   AllFilesContainer,
   BigSidebar,
-  FormRowSelect,
-  Editor,
+  FormRowSelect, 
   Loading,
 };

@@ -311,13 +311,9 @@ const AppProvider = ({ children }) => {
         clearValues,
         getFile,
         getAllFiles,
-        // createJob,
-        // getJobs,
         setEditFile,
         deleteFile,
         editFile,
-        // showStats,
-        // clearFilters,
         changePage,
       }}
     >

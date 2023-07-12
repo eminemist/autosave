@@ -54,64 +54,7 @@ const reducer = (state, action) => {
       alertText: "",
     };
   }
-  // if (action.type === REGISTER_USER_BEGIN) {
-  //   return {
-  //     ...state,
-  //     isLoading: true,
-  //   };
-  // }
-  // if (action.type === REGISTER_USER_SUCCESS) {
-  //   return {
-  //     ...state,
-  //     isLoading: false,
-  //     token: action.payload.token,
-  //     user: action.payload.user,
-  //     userLocation: action.payload.location,
-  //     jobLocation: action.payload.location,
-  //     showAlert: true,
-  //     alertType: "success",
-  //     alertText: "User Created! Redirection.....",
-  //     isUserSet:true,
-  //   };
-  // }
-  // if (action.type === REGISTER_USER_ERROR) {
-  //   return {
-  //     ...state,
-  //     isLoading: false,
-  //     showAlert: true,
-  //     alertType: "danger",
-  //     alertText: action.payload.msg,
-  //   };
-  // }
-  // if (action.type === LOGIN_USER_BEGIN) {
-  //   return {
-  //     ...state,
-  //     isLoading: true,
-  //   };
-  // }
-  // if (action.type === LOGIN_USER_SUCCESS) {
-  //   return {
-  //     ...state,
-  //     isLoading: false,
-  //     token: action.payload.token,
-  //     user: action.payload.user,
-  //     userLocation: action.payload.location,
-  //     jobLocation: action.payload.location,
-  //     showAlert: true,
-  //     alertType: "success",
-  //     alertText: "LOgin Successful! Redirection.....",
-  //     isUserSet: true,
-  //   };
-  // }
-  // if (action.type === LOGIN_USER_ERROR) {
-  //   return {
-  //     ...state,
-  //     isLoading: false,
-  //     showAlert: true,
-  //     alertType: "danger",
-  //     alertText: action.payload.msg,
-  //   };
-  // }
+ 
   if (action.type === SETUP_USER_BEGIN) {
     return {
       ...state,
@@ -233,7 +176,7 @@ const reducer = (state, action) => {
   }
   
   if (action.type === SET_EDIT_FILE) {
-    const file = state.jobs.find((file) => file._id === action.payload.id);
+    const file = state.files.getFile((file) => file._id === action.payload.id);
     const { _id, data} = file;
     return {
       ...state,

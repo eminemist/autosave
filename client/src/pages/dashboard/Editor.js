@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { debounce } from "lodash";
 
-
+import {editFile} from "../../context/appContext"
 const Editor = () => {
   //const history = useHistory();
 
@@ -18,6 +18,7 @@ const handleChangeWithLib = debounce((e) => {
     //  .then((json) => setSuggestions(json.data.items));
      const { name, value } = e.target;
      setFile({ ...file, [name]: value });
+      editFile()
     console.log(e.target.value)
   }, 500);
 
